@@ -177,9 +177,9 @@ export default function AppLayout({ children, centerContent, title }: AppLayoutP
           <Box sx={{ flexGrow: 1 }} />
           {/* Right side user info */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
-            {/* Theme toggle */}
             {(() => {
-              const { mode, toggle } = useThemeMode();
+              const { mode, toggle, isSingleTheme } = useThemeMode();
+              if (isSingleTheme) return null;
               const isDark = mode === "dark";
               return (
                 <IconButton
@@ -196,8 +196,22 @@ export default function AppLayout({ children, centerContent, title }: AppLayoutP
             <Typography variant="body2" sx={{ display: { xs: "none", sm: "block" } }}>
               {(user as any)?.username || (user as any)?.name || (user as any)?.email || "User"}
             </Typography>
-            <Avatar sx={{ width: 32, height: 32, bgcolor: (t) => t.palette.secondary.main }}>
-              {String(((user as any)?.username || (user as any)?.name || (user as any)?.email || "U")).trim().charAt(0).toUpperCase()}
+            <Avatar 
+              src={(user as any)?.profilePicture} 
+              alt="Profile"
+              sx={{ 
+                width: 32, 
+                height: 32, 
+                bgcolor: (t) => t.palette.secondary.main,
+                '&:hover': {
+                  cursor: 'pointer',
+                  opacity: 0.9
+                }
+              }}
+            >
+              {!((user as any)?.profilePicture) && 
+                String(((user as any)?.username || (user as any)?.name || (user as any)?.email || "U")).trim().charAt(0).toUpperCase()
+              }
             </Avatar>
           </Box>
         </Toolbar>

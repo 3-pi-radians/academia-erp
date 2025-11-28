@@ -7,7 +7,7 @@ import ToastProvider from './components/common/ToastProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeModeProvider>
+    <ThemeModeProvider singleTheme={true}>
       <ToastProvider>
         <App />
       </ToastProvider>

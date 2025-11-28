@@ -2,10 +2,16 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { ThemeProvider, CssBaseline, useMediaQuery } from "@mui/material";
 import { createAppTheme, type PaletteMode } from "./index";
 
-interface ThemeModeCtx {
+interface ThemeModeProviderProps {
+  children: ReactNode;
+  singleTheme?: boolean;
+}
+
+export interface ThemeModeCtx {
   mode: PaletteMode;
   toggle: () => void;
   setMode: (m: PaletteMode) => void;
+  isSingleTheme: boolean;
 }
 
 const ThemeModeContext = createContext<ThemeModeCtx | null>(null);
@@ -18,32 +24,43 @@ export function useThemeMode() {
 
 const STORAGE_KEY = "app-theme-mode";
 
-export default function ThemeModeProvider({ children }: { children: ReactNode }) {
-  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setModeState] = useState<PaletteMode>(prefersDark ? "dark" : "light");
+export default function ThemeModeProvider({ children, singleTheme = false }: ThemeModeProviderProps) {
+  const [mode, setModeState] = useState<PaletteMode>("light");
 
   useEffect(() => {
-    const saved = (localStorage.getItem(STORAGE_KEY) as PaletteMode | null);
-    if (saved === "light" || saved === "dark") {
-      setModeState(saved);
+    if (singleTheme) {
+      // Clear any saved theme preference when in single theme mode
+      localStorage.removeItem(STORAGE_KEY);
     } else {
-      setModeState(prefersDark ? "dark" : "light");
+      // Load saved theme preference if not in single theme mode
+      const saved = localStorage.getItem(STORAGE_KEY) as PaletteMode | null;
+      if (saved === "light" || saved === "dark") {
+        setModeState(saved);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [singleTheme]);
 
   const setMode = useCallback((m: PaletteMode) => {
-    setModeState(m);
-    localStorage.setItem(STORAGE_KEY, m);
-  }, []);
+    if (!singleTheme) {
+      setModeState(m);
+      localStorage.setItem(STORAGE_KEY, m);
+    }
+  }, [singleTheme]);
 
   const toggle = useCallback(() => {
-    setMode((prev) => (prev === "light" ? "dark" : "light"));
-  }, [setMode]);
+    if (!singleTheme) {
+      setMode((prev) => (prev === "light" ? "dark" : "light"));
+    }
+  }, [singleTheme, setMode]);
 
   const theme = useMemo(() => createAppTheme(mode), [mode]);
 
-  const value = useMemo(() => ({ mode, toggle, setMode }), [mode, toggle, setMode]);
+  const value = useMemo(() => ({
+    mode,
+    toggle,
+    setMode,
+    isSingleTheme: singleTheme
+  }), [mode, toggle, setMode, singleTheme]);
 
   return (
     <ThemeModeContext.Provider value={value}>
