@@ -2,7 +2,6 @@ import { API_BASE_URL } from "../constants";
 
 class HttpClient {
   private static instance: HttpClient;
-  private oauthToken: string | null = null;
 
   private constructor() {}
 
@@ -11,10 +10,6 @@ class HttpClient {
       HttpClient.instance = new HttpClient();
     }
     return HttpClient.instance;
-  }
-
-  setToken(token: string | null) {
-    this.oauthToken = token;
   }
 
   private async request<T>(
