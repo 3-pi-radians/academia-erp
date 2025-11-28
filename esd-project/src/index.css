@@ -1,0 +1,10 @@
+/* Minimal resets; MUI's CssBaseline handles typography and colors */
+html, body, #root {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}

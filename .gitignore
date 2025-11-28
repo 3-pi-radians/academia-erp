@@ -1,0 +1,63 @@
+# Application Properties and Secrets
+**/application*.properties
+!**/application.properties.example
+**/application-*.properties
+!**/application-*.example
+**/bootstrap*.properties
+!**/bootstrap*.example
+**/*.keystore
+**/*.jks
+**/*.p12
+**/*.pfx
+**/*.pem
+**/*.crt
+**/*.key
+**/*.p7b
+**/*.p7c
+**/*.p7s
+
+# Environment variables
+.env*
+!.env.example
+!.env.sample
+
+# IDE specific files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+*~
+
+# Build and dependency directories
+target/
+build/
+bin/
+.gradle/
+.mvn/
+
+# Log files
+*.log
+logs/
+
+# Node modules
+node_modules/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development files
+local.properties
+*.local
+
+# System Files
+.DS_Store
+Thumbs.db
