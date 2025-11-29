@@ -4,6 +4,7 @@ export const LABELS = {
   ORGANISATION_ADDRESS: "Address",
   HR_FIRST_NAME: "HR First Name",
   HR_LAST_NAME: "HR Last Name",
+  HR_NAME: "HR Name",
   HR_CONTACT: "HR Contact Number",
   HR_EMAIL: "HR Email",
   SEARCH_ORGANISATION: "Search Organisation",

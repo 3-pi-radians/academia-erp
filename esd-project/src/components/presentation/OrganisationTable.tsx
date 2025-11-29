@@ -22,7 +22,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import { LABELS, MESSAGES } from "../../constants";
+import { LABELS } from "../../constants";
 import type { Organisation } from "../../models/models";
 
 interface Props {
@@ -47,7 +47,9 @@ export default function OrganisationTable({
 
   const filtered = organisations.filter((o) => {
     const byName = o.name.toLowerCase().includes(search.toLowerCase());
-    const byLocation = (o.address || "").toLowerCase().includes(searchLocation.toLowerCase());
+    const byLocation = (o.address || "")
+      .toLowerCase()
+      .includes(searchLocation.toLowerCase());
     return byName && byLocation;
   });
 
@@ -56,11 +58,22 @@ export default function OrganisationTable({
     page * rowsPerPage + rowsPerPage
   );
 
-  const isSearching = (search?.trim()?.length ?? 0) > 0 || (searchLocation?.trim()?.length ?? 0) > 0;
+  const isSearching =
+    (search?.trim()?.length ?? 0) > 0 ||
+    (searchLocation?.trim()?.length ?? 0) > 0;
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Paper elevation={0} sx={{ p: 2, mb: 2, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          mb: 2,
+          borderRadius: 2,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
         <Toolbar disableGutters sx={{ gap: 2, flexWrap: "wrap" }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Organisations
@@ -97,7 +110,11 @@ export default function OrganisationTable({
               ),
             }}
           />
-          <Button variant="contained" startIcon={<AddIcon />} onClick={onCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={onCreate}
+          >
             {LABELS.BTN_NEW_ORGANISATION}
           </Button>
         </Toolbar>
@@ -116,12 +133,18 @@ export default function OrganisationTable({
           }}
         >
           <Typography variant="h6" sx={{ mb: 1 }}>
-            {isSearching ? "No organisations found for your search" : "No organisations found"}
+            {isSearching
+              ? "No organisations found for your search"
+              : "No organisations found"}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             Get started by creating your first organisation.
           </Typography>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={onCreate}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={onCreate}
+          >
             {LABELS.BTN_NEW_ORGANISATION}
           </Button>
         </Paper>
@@ -129,36 +152,64 @@ export default function OrganisationTable({
         <Stack spacing={2}>
           {paginated.map((org, idx) => {
             const hr = (org as any).hr || {};
-            const hrName = `${hr.first_name || ""} ${hr.last_name || ""}`.trim() || "-";
+            const hrName =
+              `${hr.first_name || ""} ${hr.last_name || ""}`.trim() || "-";
             const hrContact = hr.contact_number || "-";
             return (
-            <Paper key={org.id ?? `org-${idx}`} sx={{ p: 2, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-              <Stack spacing={0.5}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                  {org.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {org.address || "-"}
-                </Typography>
-                <Typography variant="body2">
-                  HR: {hrName} • {hrContact}
-                </Typography>
-              </Stack>
-              <Stack direction="row" spacing={1.5} sx={{ mt: 1.5 }}>
-                <Button size="small" variant="outlined" onClick={() => onEdit(org)} startIcon={<EditIcon fontSize="small" />}>Edit</Button>
-                <Button size="small" color="error" variant="outlined" onClick={() => onDelete(org)} startIcon={<DeleteIcon fontSize="small" />}>Delete</Button>
-              </Stack>
-            </Paper>
-          )})}
+              <Paper
+                key={org.id ?? `org-${idx}`}
+                sx={{
+                  p: 2,
+                  borderRadius: 2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
+              >
+                <Stack spacing={0.5}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    {org.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {org.address || "-"}
+                  </Typography>
+                  <Typography variant="body2">
+                    HR: {hrName} • {hrContact}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1.5} sx={{ mt: 1.5 }}>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={() => onEdit(org)}
+                    startIcon={<EditIcon fontSize="small" />}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="outlined"
+                    onClick={() => onDelete(org)}
+                    startIcon={<DeleteIcon fontSize="small" />}
+                  >
+                    Delete
+                  </Button>
+                </Stack>
+              </Paper>
+            );
+          })}
         </Stack>
       ) : (
-        <TableContainer component={Paper} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}
+        >
           <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>{LABELS.ORGANISATION_NAME}</TableCell>
                 <TableCell>{LABELS.ORGANISATION_ADDRESS}</TableCell>
-                <TableCell>{LABELS.HR_FIRST_NAME}</TableCell>
+                <TableCell>{LABELS.HR_NAME}</TableCell>
                 <TableCell>{LABELS.HR_CONTACT}</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
@@ -166,25 +217,42 @@ export default function OrganisationTable({
             <TableBody>
               {paginated.map((org, idx) => {
                 const hr = (org as any).hr || {};
-                const hrName = `${hr.first_name || ""} ${hr.last_name || ""}`.trim() || "-";
+                const hrName =
+                  `${hr.first_name || ""} ${hr.last_name || ""}`.trim() || "-";
                 const hrContact = hr.contact_number || "-";
                 return (
-                <TableRow key={org.id ?? `org-${idx}`} hover sx={{ backgroundColor: idx % 2 ? "action.hover" : "inherit" }}>
-                  <TableCell>{org.name}</TableCell>
-                  <TableCell>{org.address || "-"}</TableCell>
-                  <TableCell>
-                    {hrName}
-                  </TableCell>
-                  <TableCell>{hrContact}</TableCell>
-                  <TableCell align="right">
-                    <IconButton onClick={() => onEdit(org)} aria-label="edit" sx={{ color: (t) => (t.palette.mode === 'dark' ? '#3B82F6' : 'inherit') }}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => onDelete(org)} color="error" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>)
+                  <TableRow
+                    key={org.id ?? `org-${idx}`}
+                    hover
+                    sx={{
+                      backgroundColor: idx % 2 ? "action.hover" : "inherit",
+                    }}
+                  >
+                    <TableCell>{org.name}</TableCell>
+                    <TableCell>{org.address || "-"}</TableCell>
+                    <TableCell>{hrName}</TableCell>
+                    <TableCell>{hrContact}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={() => onEdit(org)}
+                        aria-label="edit"
+                        sx={{
+                          color: (t) =>
+                            t.palette.mode === "dark" ? "#3B82F6" : "inherit",
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => onDelete(org)}
+                        color="error"
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
               })}
             </TableBody>
           </Table>
@@ -193,10 +261,16 @@ export default function OrganisationTable({
 
       {/* Simple client-side pagination controls */}
       {filtered.length > 0 && (
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mt: 2 }}
+        >
           <Typography variant="body2" color="text.secondary">
             Showing {Math.min(filtered.length, page * rowsPerPage + 1)}-
-            {Math.min(filtered.length, (page + 1) * rowsPerPage)} of {filtered.length}
+            {Math.min(filtered.length, (page + 1) * rowsPerPage)} of{" "}
+            {filtered.length}
           </Typography>
           <Stack direction="row" spacing={1}>
             <Button

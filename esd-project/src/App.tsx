@@ -5,7 +5,7 @@ import OrganisationListPage from "./pages/ListOrganisationPage";
 import OrganisationCreatePage from "./pages/CreateOrganizationPage";
 import OrganisationEditPage from "./pages/EditOrganisationPage";
 import UpdateOrganisationPage from "./pages/UpdateOrganisationPage";
-import OAuthCallbackPage from "./pages/OAuthCallbackPage";
+// import OAuthCallbackPage from "./pages/OAuthCallbackPage";
 import LoginPage from "./pages/LoginPage";
 import LogoutProcessingPage from "./pages/LogoutProcessingPage";
 import ProtectedRoute from "./components/containers/ProtectedRoute";
@@ -27,8 +27,11 @@ export default function App() {
         <Routes>
           <Route path={ROUTES.HOME} element={<RootRedirect />} />
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-          <Route path={ROUTES.OAUTH_CALLBACK} element={<OAuthCallbackPage />} />
-          <Route path={ROUTES.LOGOUT_PROCESS} element={<LogoutProcessingPage />} />
+          {/* <Route path={ROUTES.OAUTH_CALLBACK} element={<OAuthCallbackPage />} /> */}
+          <Route
+            path={ROUTES.LOGOUT_PROCESS}
+            element={<LogoutProcessingPage />}
+          />
 
           <Route element={<ProtectedRoute />}>
             <Route path={ROUTES.ORG_LIST} element={<OrganisationListPage />} />
